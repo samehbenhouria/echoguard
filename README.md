@@ -24,8 +24,11 @@ Full **EN/FR interface** — Québec seniors are a first audience.
 
 ## Responsible AI & limits
 
-- Analysis is **100% on-device**: nothing is recorded, sent, or stored by
-  EchoGuard's own code.
+- The **risk score is computed 100% on-device** and nothing is recorded or
+  stored. Typed, pasted and simulated transcripts never leave the device. One
+  honest exception: live microphone transcription is performed by the
+  browser's speech service (in Chrome, audio is processed by Google) — that is
+  the browser's service, disclosed here and in the app, not hidden.
 - It **never acts for you** — no calls, payments, blocks or reports. A human
   always decides.
 - It **can be wrong**: a clever scam may score low; an unusual legitimate call
@@ -46,15 +49,23 @@ pasting and the simulated calls work in any modern browser.
 ## Test the engine
 
 ```bash
-node test.js   # 20 checks, all green required before submission
+node test.js   # 22 checks, all green required before submission
 ```
 
 Verified results (v1, 2026-11-07): bank fraud-department scam **100 HIGH** ·
-CRA/revenue-agency scam **HIGH** · grandparent scam **75 HIGH** (100 with the
+CRA/revenue-agency scam **100 HIGH** · grandparent scam **75 HIGH** (100 with the
 family-code check armed and the word missing — the v0.1 score of 100 came from
 a credential/payment double-count that v1 fixes: "read me the numbers" is a
-payment signal, not a credential request) · legitimate clinic reminder **0 LOW**
-· legitimate pharmacy call **LOW** · empty input **0 LOW**.
+payment signal, not a credential request) · paraphrased scams in EN and FR
+(prepaid cards, "don't hang up", six-digit code) **HIGH** · legitimate clinic
+reminder **0 LOW** · legitimate pharmacy call **0 LOW** · empty input **0 LOW**.
+
+## Use it in 3 steps (set up before a suspicious call ever comes)
+
+1. Save the demo page to your home screen or bookmarks.
+2. Agree on a family code word with your relatives, in person.
+3. During a doubtful call: speakerphone on → open EchoGuard → tap
+   "Listen live".
 
 ## Layout
 

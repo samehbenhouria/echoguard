@@ -26,7 +26,9 @@
         /gift cards?/i, /wire (transfer|the money)/i, /send (money|funds|payment)/i,
         /e-?transfer/i, /bitcoin|crypto(currency)?/i, /cash .{0,20}(mail|courier|pick ?up)/i,
         /buy .{0,20}cards?/i, /transfer .{0,30}(now|today|immediately)/i,
-        /read (me )?(the )?numbers/i, /pay (now|immediately|today) (by|with|via)/i
+        /read (me )?(the )?numbers/i, /pay (now|immediately|today) (by|with|via)/i,
+        /prepaid cards?/i, /cartes? prépayées?/i, /steam cards?|itunes cards?|google play cards?/i,
+        /money ?gram|western union/i, /cartes? (cadeaux?|d'achat)/i
       ],
       advice: "A real bank, police service or agency never asks to be paid in gift cards, crypto or a rushed transfer.",
       advice_fr: "Une vraie banque, un vrai service de police ou un vrai organisme ne demande jamais d'être payé en cartes-cadeaux, en crypto ou par un virement précipité."
@@ -40,7 +42,9 @@
         /verification code/i, /one-time (code|password)/i, /your password/i,
         /social insurance/i, /\bSIN\b/, /banking (details|password|PIN)/i,
         /read (me )?(the )?(verification )?code/i, /account number/i,
-        /code de vérification/i, /mot de passe/i, /numéro d'assurance sociale/i
+        /code de vérification/i, /mot de passe/i, /numéro d'assurance sociale/i,
+        /six[- ]digit code/i, /code à (six|\d+) chiffres/i, /code (de|à) \d+ chiffres/i,
+        /the \d+[- ]digit code/i, /donnez?[- ]moi le code/i, /give me the code/i
       ],
       advice: "Never share a password, PIN or one-time code. The real institution already has your information.",
       advice_fr: "Ne partagez jamais un mot de passe, un NIP ou un code à usage unique. La vraie institution a déjà vos renseignements."
@@ -53,7 +57,9 @@
       patterns: [
         /don'?t tell (anyone|your|them)/i, /do not tell/i, /keep (this|it) (secret|between us)/i,
         /don'?t (call|contact) (your )?(bank|family)/i, /stay on the (line|phone)/i,
-        /tell (no one|nobody)/i, /ne (le )?dites? à personne/i, /gardez? (cela|ça) secret/i, /restez? en ligne/i
+        /tell (no one|nobody)/i, /ne (le )?dites? à personne/i, /gardez? (cela|ça) secret/i, /restez? en ligne/i,
+        /don'?t hang up/i, /ne raccrochez pas/i, /stay (near|by|with) (the )?phone/i,
+        /keep (your )?(phone|device) (near|with you|close)/i, /gardez? (l'appareil|le téléphone) (près de vous|avec vous)/i
       ],
       advice: "Secrecy is the scammer's main tool. A legitimate caller will always let you hang up and verify.",
       advice_fr: "Le secret est l'outil principal de l'arnaqueur. Un appelant légitime vous laissera toujours raccrocher et vérifier."
@@ -197,6 +203,7 @@
     },
     legit_reminder: {
       title: "Simulated call — clinic appointment reminder",
+      title_fr: "Appel simulé — rappel de rendez-vous à la clinique",
       text: "Hello, this is the clinic calling to confirm your appointment on Tuesday at 10 a.m. If you need to reschedule, you can call us back at the number on your appointment card during opening hours. Have a good day."
     },
     legit_pharmacy: {

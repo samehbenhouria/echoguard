@@ -46,6 +46,12 @@ check("family code given passes", !ids(gpWithCode).includes("family_code_missing
 const bankCodeNA = E.analyze(E.SAMPLES.bank_scam.text, { familyCodeWord: "maple-syrup" });
 check("family code N/A on non-family call", !ids(bankCodeNA).includes("family_code_missing"));
 
+// Paraphrase robustness (jury correction): scammers who avoid the classic wording
+const paraEn = E.analyze("Go to the store and get prepaid cards for the amount. Do not hang up, stay by the phone, and give me the six digit code when it arrives.");
+check("paraphrase EN scam HIGH (prepaid + don't hang up + six-digit code)", paraEn.levelCode === "HIGH" && ids(paraEn).includes("payment_request") && ids(paraEn).includes("credential_request") && ids(paraEn).includes("secrecy"), "score " + paraEn.score + " " + ids(paraEn).join(","));
+const paraFr = E.analyze("Achetez des cartes prépayées au magasin. Ne raccrochez pas et donnez-moi le code à six chiffres dès que vous le recevez.", { lang: "fr" });
+check("paraphrase FR scam HIGH", paraFr.levelCode === "HIGH" && ids(paraFr).includes("payment_request") && ids(paraFr).includes("credential_request"), "score " + paraFr.score + " " + ids(paraFr).join(","));
+
 // FR
 const bankFr = E.analyze(E.SAMPLES.bank_scam.text, { lang: "fr" });
 check("FR verdict RISQUE ÉLEVÉ", bankFr.level === "RISQUE ÉLEVÉ", bankFr.level);

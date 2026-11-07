@@ -47,6 +47,15 @@
   <p class="tag" data-i18n="tag">A calm second pair of ears for phone calls. EchoGuard listens for the classic moves of a scam call — urgency, secrecy, unusual payment, codes — and tells you, in plain words, <strong>pause and verify</strong> before money or information leaves your hands.</p>
 
   <div class="card">
+    <h2 style="margin-top:0" data-i18n="stepsTitle">Use it in 3 steps — set up before a suspicious call ever comes</h2>
+    <ol style="font-size:1.08rem; line-height:1.55; margin-bottom:0">
+      <li data-i18n="step1">Save this page to your home screen or bookmarks.</li>
+      <li data-i18n="step2">Agree on a family code word with your relatives, in person, and write it in the box below.</li>
+      <li data-i18n="step3">During a doubtful call: put the phone on speaker, open EchoGuard, and tap “Listen live”.</li>
+    </ol>
+  </div>
+
+  <div class="card">
     <label for="familycode" data-i18n="familyLabel">Family code word (secret word only your family knows)</label>
     <input type="text" id="familycode" data-i18n-ph="familyPh" placeholder="e.g. maple-syrup — if a caller claiming to be family in an emergency cannot say it, EchoGuard flags it">
     <p class="privacy" data-i18n="familyHelp">Agree on this word with your family in person. EchoGuard checks it only in your browser — it is never sent or stored.</p>
@@ -62,7 +71,7 @@
       <button class="sample" id="mic">🎙️ <span data-i18n="mic">Listen live (microphone)</span></button>
     </div>
     <p class="privacy" id="micstatus"></p>
-    <p class="privacy" data-i18n="privacy">Privacy by design: analysis runs entirely in your browser. Nothing is recorded, sent or stored. EchoGuard never asks you to act on a call — it asks you to stop, hang up, and verify through an official channel. Live listening uses your browser's speech recognition (Chrome: Web Speech API).</p>
+    <p class="privacy" data-i18n="privacy">Privacy by design: the risk score is computed entirely in your browser, and typed, pasted or simulated transcripts never leave your device. Nothing is recorded or stored. One honest exception: live listening uses your browser's speech recognition — in Chrome, the audio is sent to Google's speech service to be transcribed. If you prefer zero transmission, type or paste instead. EchoGuard never asks you to act on a call — it asks you to stop, hang up, and verify through an official channel.</p>
   </div>
 
   <div class="card" id="verdict">
@@ -76,7 +85,7 @@
   <div class="card" id="responsible">
     <h2 data-i18n="raiTitle">Responsible AI &amp; limits — what EchoGuard does NOT do</h2>
     <ul>
-      <li data-i18n="rai1">It records nothing. Transcripts stay in this page, in your browser. No audio, text or score leaves your device from EchoGuard's own code.</li>
+      <li data-i18n="rai1">It records nothing and stores nothing. The score is computed on your device and typed, pasted or simulated transcripts never leave it. One honest exception: live microphone transcription is performed by your browser's speech service (in Chrome, audio is processed by Google) — that is the browser's service, not EchoGuard's code, and we say so plainly.</li>
       <li data-i18n="rai2">It never acts for you. It never calls, pays, blocks or reports anyone. You — a human — always decide, ideally after hanging up and verifying through an official channel.</li>
       <li data-i18n="rai3">It can be wrong. It is a transparent pattern system, not a mind reader: a clever scam may score low, and an unusual but legitimate call may score high. A low score is never a guarantee a call is safe.</li>
       <li data-i18n="rai4">It explains itself. Every point of the score names the pattern and the exact words that triggered it, so you can judge the warning instead of obeying a black box.</li>
@@ -84,7 +93,7 @@
     </ul>
   </div>
 
-  <footer data-i18n="footer">EchoGuard v1 — built for SLAY HACKS 2026. Explainable pattern analysis + browser speech-to-text, 100% on-device.</footer>
+  <footer data-i18n="footer">EchoGuard v1 — built for SLAY HACKS 2026. Explainable pattern analysis computed on-device; live transcription by your browser's speech service.</footer>
 </main>
 <script src="engine.js"></script>
 <script>
@@ -96,14 +105,18 @@
       familyHelp: "Agree on this word with your family in person. EchoGuard checks it only in your browser — it is never sent or stored.",
       transcriptLabel: "Call transcript (type, paste, speak, or try a simulated call)", transcriptPh: "Paste or type what the caller said…",
       analyze: "Analyse this call", live: "Simulate a live call", mic: "Listen live (microphone)", micStop: "Stop listening",
-      privacy: "Privacy by design: analysis runs entirely in your browser. Nothing is recorded, sent or stored. EchoGuard never asks you to act on a call — it asks you to stop, hang up, and verify through an official channel. Live listening uses your browser's speech recognition (Chrome: Web Speech API).",
+      stepsTitle: "Use it in 3 steps — set up before a suspicious call ever comes",
+      step1: "Save this page to your home screen or bookmarks.",
+      step2: "Agree on a family code word with your relatives, in person, and write it in the box below.",
+      step3: "During a doubtful call: put the phone on speaker, open EchoGuard, and tap “Listen live”.",
+      privacy: "Privacy by design: the risk score is computed entirely in your browser, and typed, pasted or simulated transcripts never leave your device. Nothing is recorded or stored. One honest exception: live listening uses your browser's speech recognition — in Chrome, the audio is sent to Google's speech service to be transcribed. If you prefer zero transmission, type or paste instead. EchoGuard never asks you to act on a call — it asks you to stop, hang up, and verify through an official channel.",
       raiTitle: "Responsible AI & limits — what EchoGuard does NOT do",
-      rai1: "It records nothing. Transcripts stay in this page, in your browser. No audio, text or score leaves your device from EchoGuard's own code.",
+      rai1: "It records nothing and stores nothing. The score is computed on your device and typed, pasted or simulated transcripts never leave it. One honest exception: live microphone transcription is performed by your browser's speech service (in Chrome, audio is processed by Google) — that is the browser's service, not EchoGuard's code, and we say so plainly.",
       rai2: "It never acts for you. It never calls, pays, blocks or reports anyone. You — a human — always decide, ideally after hanging up and verifying through an official channel.",
       rai3: "It can be wrong. It is a transparent pattern system, not a mind reader: a clever scam may score low, and an unusual but legitimate call may score high. A low score is never a guarantee a call is safe.",
       rai4: "It explains itself. Every point of the score names the pattern and the exact words that triggered it, so you can judge the warning instead of obeying a black box.",
       rai5: "If money or codes already left your hands, contact your bank and the police directly — do not wait for any app.",
-      footer: "EchoGuard v1 — built for SLAY HACKS 2026. Explainable pattern analysis + browser speech-to-text, 100% on-device.",
+      footer: "EchoGuard v1 — built for SLAY HACKS 2026. Explainable pattern analysis computed on-device; live transcription by your browser's speech service.",
       score: s => "Risk score: " + s + " / 100 — every point below is explained by a detected pattern and the exact words that triggered it.",
       heard: "Heard:", what: "What to do:", none: "No classic scam pattern detected in this text.",
       micOn: "Listening… speak now. EchoGuard is transcribing and analysing live.", micOff: "Microphone stopped.", micNo: "Speech recognition is not available in this browser. Please use Chrome, or type / paste the transcript." },
@@ -112,14 +125,18 @@
       familyHelp: "Convenez de ce mot avec votre famille, en personne. EchoGuard le vérifie seulement dans votre navigateur — il n'est jamais envoyé ni conservé.",
       transcriptLabel: "Transcription de l'appel (écrivez, collez, parlez, ou essayez un appel simulé)", transcriptPh: "Collez ou écrivez ce que l'appelant a dit…",
       analyze: "Analyser cet appel", live: "Simuler un appel en direct", mic: "Écouter en direct (microphone)", micStop: "Arrêter l'écoute",
-      privacy: "Vie privée par conception : l'analyse se fait entièrement dans votre navigateur. Rien n'est enregistré, envoyé ni conservé. EchoGuard ne vous demande jamais d'obéir à un appel — il vous demande de vous arrêter, de raccrocher et de vérifier par un canal officiel. L'écoute en direct utilise la reconnaissance vocale de votre navigateur (Chrome : Web Speech API).",
+      stepsTitle: "En 3 pas — à préparer avant qu'un appel douteux n'arrive",
+      step1: "Ajoutez cette page à votre écran d'accueil ou à vos favoris.",
+      step2: "Convenez d'un mot secret de famille avec vos proches, en personne, et inscrivez-le dans la case ci-dessous.",
+      step3: "Pendant un appel douteux : mettez le haut-parleur, ouvrez EchoGuard et touchez « Écouter en direct ».",
+      privacy: "Vie privée par conception : le score de risque est calculé entièrement dans votre navigateur, et les transcriptions écrites, collées ou simulées ne quittent jamais votre appareil. Rien n'est enregistré ni conservé. Une exception, dite franchement : l'écoute en direct utilise la reconnaissance vocale de votre navigateur — dans Chrome, l'audio est envoyé au service vocal de Google pour être transcrit. Si vous préférez zéro transmission, écrivez ou collez le texte. EchoGuard ne vous demande jamais d'obéir à un appel — il vous demande de vous arrêter, de raccrocher et de vérifier par un canal officiel.",
       raiTitle: "IA responsable et limites — ce qu'EchoGuard ne fait PAS",
-      rai1: "Il n'enregistre rien. Les transcriptions restent dans cette page, dans votre navigateur. Aucun son, texte ou score ne quitte votre appareil par le code d'EchoGuard.",
+      rai1: "Il n'enregistre rien et ne conserve rien. Le score est calculé sur votre appareil et les transcriptions écrites, collées ou simulées ne le quittent jamais. Une exception, dite franchement : la transcription du microphone en direct est faite par le service vocal de votre navigateur (dans Chrome, l'audio est traité par Google) — c'est le service du navigateur, pas le code d'EchoGuard, et nous le disons clairement.",
       rai2: "Il n'agit jamais à votre place. Il n'appelle, ne paie, ne bloque et ne dénonce personne. C'est vous — un humain — qui décidez toujours, idéalement après avoir raccroché et vérifié par un canal officiel.",
       rai3: "Il peut se tromper. C'est un système de motifs transparent, pas un lecteur de pensées : une arnaque habile peut obtenir un score faible, et un appel inhabituel mais légitime peut obtenir un score élevé. Un score faible ne garantit jamais qu'un appel est sûr.",
       rai4: "Il s'explique. Chaque point du score nomme le motif et les mots exacts qui l'ont déclenché, pour que vous puissiez juger l'alerte au lieu d'obéir à une boîte noire.",
       rai5: "Si de l'argent ou des codes sont déjà partis, contactez directement votre banque et la police — n'attendez aucune application.",
-      footer: "EchoGuard v1 — réalisé pour SLAY HACKS 2026. Analyse de motifs explicable + reconnaissance vocale du navigateur, 100 % sur l'appareil.",
+      footer: "EchoGuard v1 — réalisé pour SLAY HACKS 2026. Analyse de motifs explicable calculée sur l'appareil ; transcription en direct par le service vocal de votre navigateur.",
       score: s => "Score de risque : " + s + " / 100 — chaque point ci-dessous est expliqué par un motif détecté et les mots exacts qui l'ont déclenché.",
       heard: "Entendu :", what: "Quoi faire :", none: "Aucun schéma d'arnaque classique détecté dans ce texte.",
       micOn: "Écoute en cours… parlez maintenant. EchoGuard transcrit et analyse en direct.", micOff: "Microphone arrêté.", micNo: "La reconnaissance vocale n'est pas disponible dans ce navigateur. Utilisez Chrome, ou écrivez / collez la transcription." }
@@ -184,9 +201,10 @@
       for (const res of e.results) if (res.isFinal) finalText += res[0].transcript + " ";
       if (finalText) { $("transcript").value = ($("transcript").value + " " + finalText).trim(); run(); }
     };
-    recog.onend = () => { listening = false; $("mic").classList.remove("mic-on"); $("micstatus").textContent = d.micOff; };
-    recog.onerror = () => { listening = false; $("mic").classList.remove("mic-on"); };
-    recog.start(); listening = true; $("mic").classList.add("mic-on"); $("micstatus").textContent = d.micOn;
+    const micLabel = $("mic").querySelector("span");
+    recog.onend = () => { listening = false; $("mic").classList.remove("mic-on"); micLabel.textContent = I18N[LANG].mic; $("micstatus").textContent = d.micOff; };
+    recog.onerror = () => { listening = false; $("mic").classList.remove("mic-on"); micLabel.textContent = I18N[LANG].mic; };
+    recog.start(); listening = true; $("mic").classList.add("mic-on"); micLabel.textContent = d.micStop; $("micstatus").textContent = d.micOn;
   };
   renderSamples();
 </script>
