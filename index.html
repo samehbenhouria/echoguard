@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EchoGuard — Pause before the scam wins</title>
+<style>
+  :root { --ink:#14213d; --paper:#fdfbf7; --accent:#b3001b; --ok:#1d7a3a; --warn:#b8860b; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: Georgia, 'Times New Roman', serif; background: var(--paper); color: var(--ink); }
+  main { max-width: 880px; margin: 0 auto; padding: 32px 20px 64px; }
+  h1 { font-size: 2.6rem; margin: 0 0 4px; letter-spacing: -0.5px; }
+  h2 { font-size: 1.5rem; }
+  .tag { font-size: 1.15rem; color:#444; margin: 0 0 24px; }
+  .card { background:#fff; border:2px solid var(--ink); border-radius:12px; padding:20px; margin-bottom:20px; }
+  label { font-weight:bold; display:block; margin-bottom:8px; font-size:1.05rem; }
+  textarea, input[type=text] { width:100%; font-size:1.05rem; padding:12px; border:1.5px solid #999; border-radius:8px; font-family: inherit; }
+  textarea { min-height:130px; }
+  .row { display:flex; flex-wrap:wrap; gap:10px; margin:12px 0; }
+  button { font-size:1.05rem; padding:12px 20px; border-radius:999px; border:2px solid var(--ink); background:var(--ink); color:#fff; cursor:pointer; font-family:inherit; }
+  button.sample { background:#fff; color:var(--ink); }
+  button.big { font-size:1.25rem; padding:14px 28px; background:var(--accent); border-color:var(--accent); }
+  button.lang { background:#fff; color:var(--ink); padding:8px 16px; }
+  button.lang.on { background:var(--ink); color:#fff; }
+  #verdict { display:none; }
+  #verdict .level { font-size:2rem; font-weight:bold; margin:0; }
+  #verdict.high .level { color: var(--accent); }
+  #verdict.caution .level { color: var(--warn); }
+  #verdict.low .level { color: var(--ok); }
+  .gauge { height:18px; background:#eee; border-radius:9px; overflow:hidden; margin:12px 0; border:1px solid #bbb; }
+  .gauge > div { height:100%; width:0%; transition: width .5s; }
+  ul.signals { list-style:none; padding:0; }
+  ul.signals li { border-left:6px solid var(--accent); background:#fff5f5; padding:10px 14px; margin:8px 0; border-radius:0 8px 8px 0; }
+  ul.signals .ev { font-style:italic; color:#555; }
+  .privacy { font-size:.95rem; color:#555; }
+  .mic-on { background:var(--accent) !important; border-color:var(--accent) !important; color:#fff !important; }
+  footer { color:#777; font-size:.9rem; margin-top:32px; }
+</style>
+</head>
+<body>
+<main>
+  <div class="row" style="justify-content:flex-end">
+    <button class="lang on" id="lang-en">EN</button>
+    <button class="lang" id="lang-fr">FR</button>
+  </div>
+  <h1>🛡️ EchoGuard</h1>
+  <p class="tag" data-i18n="tag">A calm second pair of ears for phone calls. EchoGuard listens for the classic moves of a scam call — urgency, secrecy, unusual payment, codes — and tells you, in plain words, <strong>pause and verify</strong> before money or information leaves your hands.</p>
+
+  <div class="card">
+    <label for="familycode" data-i18n="familyLabel">Family code word (secret word only your family knows)</label>
+    <input type="text" id="familycode" data-i18n-ph="familyPh" placeholder="e.g. maple-syrup — if a caller claiming to be family in an emergency cannot say it, EchoGuard flags it">
+    <p class="privacy" data-i18n="familyHelp">Agree on this word with your family in person. EchoGuard checks it only in your browser — it is never sent or stored.</p>
+  </div>
+
+  <div class="card">
+    <label for="transcript" data-i18n="transcriptLabel">Call transcript (type, paste, speak, or try a simulated call)</label>
+    <textarea id="transcript" data-i18n-ph="transcriptPh" placeholder="Paste or type what the caller said…"></textarea>
+    <div class="row" id="samples"></div>
+    <div class="row">
+      <button class="big" id="analyze">🔍 <span data-i18n="analyze">Analyse this call</span></button>
+      <button class="sample" id="live">▶ <span data-i18n="live">Simulate a live call</span></button>
+      <button class="sample" id="mic">🎙️ <span data-i18n="mic">Listen live (microphone)</span></button>
+    </div>
+    <p class="privacy" id="micstatus"></p>
+    <p class="privacy" data-i18n="privacy">Privacy by design: analysis runs entirely in your browser. Nothing is recorded, sent or stored. EchoGuard never asks you to act on a call — it asks you to stop, hang up, and verify through an official channel. Live listening uses your browser's speech recognition (Chrome: Web Speech API).</p>
+  </div>
+
+  <div class="card" id="verdict">
+    <p class="level" id="level"></p>
+    <div class="gauge"><div id="bar"></div></div>
+    <p id="score"></p>
+    <ul class="signals" id="signals"></ul>
+    <p id="action" style="font-size:1.1rem;"></p>
+  </div>
+
+  <div class="card" id="responsible">
+    <h2 data-i18n="raiTitle">Responsible AI &amp; limits — what EchoGuard does NOT do</h2>
+    <ul>
+      <li data-i18n="rai1">It records nothing. Transcripts stay in this page, in your browser. No audio, text or score leaves your device from EchoGuard's own code.</li>
+      <li data-i18n="rai2">It never acts for you. It never calls, pays, blocks or reports anyone. You — a human — always decide, ideally after hanging up and verifying through an official channel.</li>
+      <li data-i18n="rai3">It can be wrong. It is a transparent pattern system, not a mind reader: a clever scam may score low, and an unusual but legitimate call may score high. A low score is never a guarantee a call is safe.</li>
+      <li data-i18n="rai4">It explains itself. Every point of the score names the pattern and the exact words that triggered it, so you can judge the warning instead of obeying a black box.</li>
+      <li data-i18n="rai5">If money or codes already left your hands, contact your bank and the police directly — do not wait for any app.</li>
+    </ul>
+  </div>
+
+  <footer data-i18n="footer">EchoGuard v1 — built for SLAY HACKS 2026. Explainable pattern analysis + browser speech-to-text, 100% on-device.</footer>
+</main>
+<script src="engine.js"></script>
+<script>
+  const $ = id => document.getElementById(id);
+  let LANG = "en";
+  const I18N = {
+    en: { tag: document.querySelector('[data-i18n="tag"]').innerHTML,
+      familyLabel: "Family code word (secret word only your family knows)", familyPh: "e.g. maple-syrup — if a caller claiming to be family in an emergency cannot say it, EchoGuard flags it",
+      familyHelp: "Agree on this word with your family in person. EchoGuard checks it only in your browser — it is never sent or stored.",
+      transcriptLabel: "Call transcript (type, paste, speak, or try a simulated call)", transcriptPh: "Paste or type what the caller said…",
+      analyze: "Analyse this call", live: "Simulate a live call", mic: "Listen live (microphone)", micStop: "Stop listening",
+      privacy: "Privacy by design: analysis runs entirely in your browser. Nothing is recorded, sent or stored. EchoGuard never asks you to act on a call — it asks you to stop, hang up, and verify through an official channel. Live listening uses your browser's speech recognition (Chrome: Web Speech API).",
+      raiTitle: "Responsible AI & limits — what EchoGuard does NOT do",
+      rai1: "It records nothing. Transcripts stay in this page, in your browser. No audio, text or score leaves your device from EchoGuard's own code.",
+      rai2: "It never acts for you. It never calls, pays, blocks or reports anyone. You — a human — always decide, ideally after hanging up and verifying through an official channel.",
+      rai3: "It can be wrong. It is a transparent pattern system, not a mind reader: a clever scam may score low, and an unusual but legitimate call may score high. A low score is never a guarantee a call is safe.",
+      rai4: "It explains itself. Every point of the score names the pattern and the exact words that triggered it, so you can judge the warning instead of obeying a black box.",
+      rai5: "If money or codes already left your hands, contact your bank and the police directly — do not wait for any app.",
+      footer: "EchoGuard v1 — built for SLAY HACKS 2026. Explainable pattern analysis + browser speech-to-text, 100% on-device.",
+      score: s => "Risk score: " + s + " / 100 — every point below is explained by a detected pattern and the exact words that triggered it.",
+      heard: "Heard:", what: "What to do:", none: "No classic scam pattern detected in this text.",
+      micOn: "Listening… speak now. EchoGuard is transcribing and analysing live.", micOff: "Microphone stopped.", micNo: "Speech recognition is not available in this browser. Please use Chrome, or type / paste the transcript." },
+    fr: { tag: "Une deuxième paire d'oreilles, calme, pour vos appels téléphoniques. EchoGuard écoute les gestes classiques d'un appel frauduleux — urgence, secret, paiement inhabituel, codes — et vous dit, en mots simples, <strong>pausez et vérifiez</strong> avant que l'argent ou vos renseignements ne partent.",
+      familyLabel: "Mot secret de famille (un mot que seule votre famille connaît)", familyPh: "ex. sirop-d-érable — si un appelant qui prétend être un proche en urgence ne peut pas le dire, EchoGuard le signale",
+      familyHelp: "Convenez de ce mot avec votre famille, en personne. EchoGuard le vérifie seulement dans votre navigateur — il n'est jamais envoyé ni conservé.",
+      transcriptLabel: "Transcription de l'appel (écrivez, collez, parlez, ou essayez un appel simulé)", transcriptPh: "Collez ou écrivez ce que l'appelant a dit…",
+      analyze: "Analyser cet appel", live: "Simuler un appel en direct", mic: "Écouter en direct (microphone)", micStop: "Arrêter l'écoute",
+      privacy: "Vie privée par conception : l'analyse se fait entièrement dans votre navigateur. Rien n'est enregistré, envoyé ni conservé. EchoGuard ne vous demande jamais d'obéir à un appel — il vous demande de vous arrêter, de raccrocher et de vérifier par un canal officiel. L'écoute en direct utilise la reconnaissance vocale de votre navigateur (Chrome : Web Speech API).",
+      raiTitle: "IA responsable et limites — ce qu'EchoGuard ne fait PAS",
+      rai1: "Il n'enregistre rien. Les transcriptions restent dans cette page, dans votre navigateur. Aucun son, texte ou score ne quitte votre appareil par le code d'EchoGuard.",
+      rai2: "Il n'agit jamais à votre place. Il n'appelle, ne paie, ne bloque et ne dénonce personne. C'est vous — un humain — qui décidez toujours, idéalement après avoir raccroché et vérifié par un canal officiel.",
+      rai3: "Il peut se tromper. C'est un système de motifs transparent, pas un lecteur de pensées : une arnaque habile peut obtenir un score faible, et un appel inhabituel mais légitime peut obtenir un score élevé. Un score faible ne garantit jamais qu'un appel est sûr.",
+      rai4: "Il s'explique. Chaque point du score nomme le motif et les mots exacts qui l'ont déclenché, pour que vous puissiez juger l'alerte au lieu d'obéir à une boîte noire.",
+      rai5: "Si de l'argent ou des codes sont déjà partis, contactez directement votre banque et la police — n'attendez aucune application.",
+      footer: "EchoGuard v1 — réalisé pour SLAY HACKS 2026. Analyse de motifs explicable + reconnaissance vocale du navigateur, 100 % sur l'appareil.",
+      score: s => "Score de risque : " + s + " / 100 — chaque point ci-dessous est expliqué par un motif détecté et les mots exacts qui l'ont déclenché.",
+      heard: "Entendu :", what: "Quoi faire :", none: "Aucun schéma d'arnaque classique détecté dans ce texte.",
+      micOn: "Écoute en cours… parlez maintenant. EchoGuard transcrit et analyse en direct.", micOff: "Microphone arrêté.", micNo: "La reconnaissance vocale n'est pas disponible dans ce navigateur. Utilisez Chrome, ou écrivez / collez la transcription." }
+  };
+  function setLang(l) {
+    LANG = l; document.documentElement.lang = l;
+    $("lang-en").classList.toggle("on", l === "en"); $("lang-fr").classList.toggle("on", l === "fr");
+    const d = I18N[l];
+    document.querySelectorAll("[data-i18n]").forEach(el => { const k = el.getAttribute("data-i18n"); if (d[k]) el.innerHTML = d[k]; });
+    document.querySelectorAll("[data-i18n-ph]").forEach(el => { const k = el.getAttribute("data-i18n-ph"); if (d[k]) el.placeholder = d[k]; });
+    renderSamples();
+    if ($("verdict").style.display === "block") run();
+  }
+  function renderSamples() {
+    const row = $("samples"); row.innerHTML = "";
+    Object.entries(EchoGuard.SAMPLES).forEach(([key, s]) => {
+      const b = document.createElement("button");
+      b.className = "sample"; b.textContent = (LANG === "fr" && s.title_fr) ? s.title_fr : s.title;
+      b.onclick = () => { $("transcript").value = s.text; run(); };
+      row.appendChild(b);
+    });
+  }
+  function run() {
+    const d = I18N[LANG];
+    const r = EchoGuard.analyze($("transcript").value, { lang: LANG, familyCodeWord: $("familycode").value });
+    const v = $("verdict"); v.style.display = "block";
+    v.className = "card " + (r.levelCode === "HIGH" ? "high" : r.levelCode === "CAUTION" ? "caution" : "low");
+    $("level").textContent = (r.levelCode === "HIGH" ? "⛔ " : r.levelCode === "CAUTION" ? "⚠️ " : "✅ ") + r.level;
+    $("bar").style.width = r.score + "%";
+    $("bar").style.background = r.levelCode === "HIGH" ? "#b3001b" : r.levelCode === "CAUTION" ? "#b8860b" : "#1d7a3a";
+    $("score").textContent = d.score(r.score);
+    $("signals").innerHTML = r.signals.map(s =>
+      `<li><strong>${s.label}</strong> (+${s.weight})<br><span class="ev">${d.heard} “${s.evidence}”</span><br>${s.advice}</li>`).join("")
+      || `<li style='border-color:#1d7a3a;background:#f2fbf4'>${d.none}</li>`;
+    $("action").innerHTML = "<strong>" + d.what + "</strong> " + r.action;
+  }
+  $("analyze").onclick = run;
+  $("lang-en").onclick = () => setLang("en");
+  $("lang-fr").onclick = () => setLang("fr");
+  $("live").onclick = () => {
+    const s = EchoGuard.SAMPLES.bank_scam.text;
+    $("transcript").value = "";
+    const words = s.split(" "); let i = 0;
+    const t = setInterval(() => {
+      $("transcript").value = words.slice(0, ++i).join(" ");
+      if (i % 12 === 0) run();
+      if (i >= words.length) { clearInterval(t); run(); }
+    }, 90);
+  };
+  // Live listen — Web Speech API (Chrome). 100% invoked from the browser.
+  let recog = null, listening = false;
+  $("mic").onclick = () => {
+    const d = I18N[LANG];
+    if (listening && recog) { recog.stop(); return; }
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) { $("micstatus").textContent = d.micNo; return; }
+    recog = new SR();
+    recog.lang = LANG === "fr" ? "fr-CA" : "en-US";
+    recog.continuous = true; recog.interimResults = true;
+    recog.onresult = e => {
+      let finalText = "";
+      for (const res of e.results) if (res.isFinal) finalText += res[0].transcript + " ";
+      if (finalText) { $("transcript").value = ($("transcript").value + " " + finalText).trim(); run(); }
+    };
+    recog.onend = () => { listening = false; $("mic").classList.remove("mic-on"); $("micstatus").textContent = d.micOff; };
+    recog.onerror = () => { listening = false; $("mic").classList.remove("mic-on"); };
+    recog.start(); listening = true; $("mic").classList.add("mic-on"); $("micstatus").textContent = d.micOn;
+  };
+  renderSamples();
+</script>
+</body>
+</html>
